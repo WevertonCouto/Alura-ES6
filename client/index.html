@@ -32,9 +32,6 @@
     </form>
     
     <div class="text-center">
-        <button onclick="negociacaoController.importaNegociacoes()" class="btn btn-primary text-center" type="button">
-            Importar Negociações
-        </button>
         <button class="btn btn-primary text-center" type="button" onclick="negociacaoController.apaga();">
             Apagar
         </button>
@@ -44,6 +41,7 @@
     <div id="negociacoesView"></div>
     <script src="app/views/View.js"></script>
     <script src="app/models/Negociacao.js"></script>
+    <script src="app/dao/NegociacaoDao.js"></script>
     <script src="app/controllers/NegociacaoController.js"></script>
     <script src="app/helpers/DateHelper.js"></script>
     <script src="app/models/ListaNegociacoes.js"></script>
@@ -54,6 +52,7 @@
     <script src="app/helpers/Bind.js"></script>
     <script src="app/services/NegociacaoService.js"></script>
     <script src="app/services/HttpService.js"></script>
+    <script src="app/services/ConnectionFactory.js"></script>
     <script>
         var negociacaoController = new NegociacaoController();
     </script>

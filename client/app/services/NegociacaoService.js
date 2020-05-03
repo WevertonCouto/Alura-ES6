@@ -39,4 +39,52 @@ class NegociacaoService {
             });
         });
     }
+    
+    cadastra(negociacao) {
+        return ConnectionFactory
+        .getConnection()
+        .then(connection => new NegociacaoDao(connection))
+        .then(dao => dao.adiciona(negociacao))
+        .then(() => 'Negociação adicionada com sucesso')
+        .catch((erro) => {
+            throw new Error(erro);
+        });
+    }
+
+    lista() {
+        return ConnectionFactory
+        .getConnection()
+        .then(connection => new NegociacaoDao(connection))
+        .then(dao => dao.listaTodos())
+        .catch(erro => {
+            console.log(erro);
+            throw new Error('Não foi possível obter as negociações');
+        })
+    }
+
+    apaga() {
+        return ConnectionFactory
+        .getConnection()
+        .then(connection => new NegociacaoDao(connection))
+        .then(dao => dao.apagaTodos())
+        .then(() => 'Negociações apagadas com sucesso')
+        .catch(erro => {
+            console.log(erro);
+            throw new Error('Não foi possível obter as negociações')
+        });
+    }
+
+    importa(listaAtual, cb) {
+        Promise.all([this.obterNegociacoesDaSemana(), 
+            this.obterNegociacoesDaSemanaAnterior(),
+            this.obterNegociacoesDaSemanaRetrasada()])
+        .then(negociacoes => {
+            cb(negociacoes.reduce((array1, array) => array1.concat(array), [])
+            .filter(negociacao => !listaAtual
+                .some(nec => JSON.stringify(nec) == JSON.stringify(negociacao))));
+        }).catch(erro => {
+            console.log(erro);
+            throw new Error('Não foi possível buscar negociação para importar');
+        });
+    }
 }
